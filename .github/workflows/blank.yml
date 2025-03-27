@@ -1,0 +1,31 @@
+name: AWS example workflow
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  BUCKET_NAME: "damalsachin" # Change bucket name
+  AWS_REGION: "ap-south-1"
+
+permissions:
+  id-token: write  # This is required for requesting the JWT
+  contents: read   # This is required for actions/checkout
+
+jobs:
+  S3PackageUpload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::476114119733:role/sairaj
+          audience: sts.amazonaws.com
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Upload a file to AWS S3
+      - name: Copy index.html to s3
+        run: aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/ --acl public-read
