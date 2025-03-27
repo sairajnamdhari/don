@@ -23,7 +23,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::476114119733:role/sairaj
-          audience: sts.amazonaws.com
+          audience: sts:amazonaws.content.com
           aws-region: ${{ env.AWS_REGION }}
 
       # Upload a file to AWS S3
